@@ -1,10 +1,8 @@
-import React from 'react'
+import React from "react";
 
-const MusicPlayer = ({song}) => {
-    console.log("currentSong",song);
-  return (
-    <div></div>
-  )
-}
+const MusicPlayer = ({ song }) => {
+  console.log("currentSong", song);
+  return <div></div>;
+};
 
-export default MusicPlayer
+export default MusicPlayer;

@@ -13,7 +13,7 @@ const SongsList = ({ songs, onSongSelect }) => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (songsListRef.current && !songsListRef.current.contains(event.target)) {
-        setSelectedSong(null); // Deselect when clicking outside
+        setSelectedSong(null); 
       }
     };
 
