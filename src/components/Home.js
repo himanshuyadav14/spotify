@@ -35,7 +35,7 @@ const Home = () => {
         </div>
 
         {/* Right - Music Player */}
-        <div className="w-[640px] h-[700px] rounded-lg shadow-lg p-6">
+        <div className="w-[480px] h-[750px] rounded-lg shadow-lg p-6">
           <MusicPlayer song={currentSong} />
         </div>
       </div>

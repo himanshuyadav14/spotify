@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { ReactComponent as Search } from "../assets/Search.svg";
 import SongChip from "./SongChip";
 
@@ -7,21 +7,6 @@ const SongsList = ({ songs, onSongSelect }) => {
   const [selectedCategory, setSelectedCategory] = useState("For You");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSong, setSelectedSong] = useState(null);
-
-  const songsListRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (songsListRef.current && !songsListRef.current.contains(event.target)) {
-        setSelectedSong(null); 
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   useEffect(() => {
     const fetchDurations = async () => {
@@ -65,7 +50,7 @@ const SongsList = ({ songs, onSongSelect }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4" ref={songsListRef}>
+    <div className="flex flex-col gap-4">
       <div className="flex gap-[40px] text-[24px] font-bold leading-[32px] text-left decoration-skip-ink-none">
         <div
           className={`cursor-pointer ${
