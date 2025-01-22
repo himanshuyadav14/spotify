@@ -21,7 +21,6 @@ const Home = () => {
   const handleSongSelect = (song) => {
     setCurrentSong(song);
   };
-
   return (
     <div className="relative bg-custom-gradient flex min-h-screen text-white">
       <div className="absolute top-10 left-10 cursor-pointer">

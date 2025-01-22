@@ -1,10 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ReactComponent as Search } from "../assets/Search.svg";
 import SongChip from "./SongChip";
 
-const SongsList = ({ songs }) => {
+const SongsList = ({ songs, onSongSelect }) => {
   const [songsWithDuration, setSongsWithDuration] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("For You");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSong, setSelectedSong] = useState(null);
+
+  const songsListRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (songsListRef.current && !songsListRef.current.contains(event.target)) {
+        setSelectedSong(null); // Deselect when clicking outside
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchDurations = async () => {
@@ -36,8 +53,19 @@ const SongsList = ({ songs }) => {
       ? songsWithDuration.filter((song) => song.top_track)
       : songsWithDuration;
 
+  const searchFilteredSongs = filteredSongs.filter(
+    (song) =>
+      song?.name?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      song?.artist?.toLowerCase().includes(searchQuery?.toLowerCase())
+  );
+
+  const handleSongSelect = (song) => {
+    setSelectedSong(song);
+    onSongSelect(song);
+  };
+
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" ref={songsListRef}>
       <div className="flex gap-[40px] text-[24px] font-bold leading-[32px] text-left decoration-skip-ink-none">
         <div
           className={`cursor-pointer ${
@@ -61,6 +89,8 @@ const SongsList = ({ songs }) => {
           type="text"
           placeholder="Search Song, Artist"
           className="w-full h-full bg-transparent text-gray-400 placeholder:text-gray-400 pl-4 pr-12 rounded-lg focus:outline-none"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
         <div className="absolute right-3 cursor-pointer">
           <Search className="text-gray-400" />
@@ -87,8 +117,13 @@ const SongsList = ({ songs }) => {
         </div>
       ) : (
         <div>
-          {filteredSongs.map((song) => (
-            <SongChip key={song.id} data={song} />
+          {searchFilteredSongs.map((song) => (
+            <SongChip
+              key={song.id}
+              data={song}
+              onClick={()=>handleSongSelect(song)}
+              isSelected={selectedSong?.id === song.id}
+            />
           ))}
         </div>
       )}

@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 
-const SongChip = ({ data }) => {
-    console.log(data);
+const SongChip = ({ data, onClick, isSelected }) => {
   return (
-    <div className="flex justify-between items-center p-4 hover:bg-[#FFFFFF14] rounded-lg cursor-pointer">
+    <div
+      onClick={() => {
+        onClick();
+      }}
+      className={`flex justify-between items-center p-4 ${isSelected ? "bg-[#FFFFFF14]" : ""} hover:bg-[#FFFFFF14] rounded-lg cursor-pointer`}
+    >
       <div className="flex gap-4 items-center">
         <div>
           <img

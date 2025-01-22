@@ -1,6 +1,7 @@
 import React from 'react'
 
-const MusicPlayer = () => {
+const MusicPlayer = ({song}) => {
+    console.log("currentSong",song);
   return (
     <div></div>
   )
