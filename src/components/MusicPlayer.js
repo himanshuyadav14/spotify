@@ -109,26 +109,26 @@ const MusicPlayer = ({ song, onPrev, onNext }) => {
     <div className="music-player">
       {/* Song Title and Artist */}
       <div className="flex flex-col gap-2 mb-8 text-left">
-        <div className="font-bold text-[32px] leading-9">
+        <div className="font-bold text-[32px] leading-9 text-center sm:text-left">
           {currentSong.name}
         </div>
-        <div className="text-[16px] leading-6 text-gray-400">
+        <div className="text-[16px] leading-6 text-gray-400 text-center sm:text-left">
           {currentSong.artist}
         </div>
       </div>
 
       {/* Song Cover */}
-      <div>
+      <div className="flex justify-center mb-8">
         {currentSong.url ? (
           <img
             src={`https://cms.samespace.com/assets/${
               currentSong.cover || "placeholder.jpg"
             }`}
             alt={`${currentSong.name} cover`}
-            className="w-[480px] h-[480px] rounded-lg"
+            className="w-[480px] h-[480px] rounded-lg sm:w-[320px] sm:h-[320px] lg:w-[480px] lg:h-[480px]"
           />
         ) : (
-          <RiFileMusicLine className="w-[480px] h-[480px] rounded-lg text-gray-300" />
+          <RiFileMusicLine className="w-[480px] h-[480px] rounded-lg text-gray-300 sm:w-[320px] sm:h-[320px] lg:w-[480px] lg:h-[480px]" />
         )}
       </div>
 
@@ -157,7 +157,7 @@ const MusicPlayer = ({ song, onPrev, onNext }) => {
       />
 
       {/* Controls */}
-      <div className="flex justify-between items-center mt-8">
+      <div className="flex justify-between items-center mt-8 sm:gap-4 sm:items-center">
         <button className="w-10 h-10 rounded-full bg-white bg-opacity-10 flex justify-center items-center">
           <BsThreeDots />
         </button>

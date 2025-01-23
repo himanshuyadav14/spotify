@@ -57,6 +57,7 @@ const Home = () => {
           : "linear-gradient(108.18deg, #201606 2.46%, #000000 99.84%)",
       }}
     >
+      {/* Menu toggle for small screens */}
       <div
         className="cursor-pointer block lg:hidden"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -73,20 +74,24 @@ const Home = () => {
           />
         )}
       </div>
+
+      {/* Fixed Logo for large screens */}
       <div className="absolute top-10 left-10 cursor-pointer hidden lg:block">
         <Logo />
       </div>
+
+      {/* Fixed User Icon */}
       <div className="absolute lg:bottom-10 lg:left-10 lg:top-auto lg:right-auto top-10 right-10 cursor-pointer">
         <User />
       </div>
 
       {/* Main Content Centered */}
-      <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between lg:px-24 px-6 m-10 mx-auto gap-36">
+      <div className="flex flex-col lg:flex-row h-full items-center justify-center lg:justify-between lg:px-24 px-6 m-10 mx-auto gap-36">
         {/* Left - Song List */}
         <div
           className={`${
             isMenuOpen ? "block" : "hidden"
-          } lg:block fixed pt-11 p-4 top-0 left-0 z-40 w-full h-full lg:w-[440px] lg:h-[800px] lg:static bg-black lg:bg-transparent overflow-auto lg:p-4`}
+          } lg:block fixed pt-11 p-4 top-0 left-0 z-40 w-full h-full lg:w-[440px] lg:h-[800px] lg:static bg-black lg:bg-transparent overflow-auto lg:p-4 transition-all duration-300 ease-in-out`}
         >
           <SongsList
             songs={songs}

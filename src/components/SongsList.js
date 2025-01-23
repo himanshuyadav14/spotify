@@ -48,8 +48,8 @@ const SongsList = ({ songs, onSongSelect, currentSong }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex gap-[40px] text-[24px] font-bold leading-[32px] text-left decoration-skip-ink-none">
+    <div className="flex flex-col gap-4 h-full max-h-[calc(100vh-200px)]">
+      <div className="flex gap-[40px] text-[24px] font-bold leading-[32px] text-left decoration-skip-ink-none flex-wrap justify-center lg:justify-start sticky top-0 z-10">
         <div
           className={`cursor-pointer ${
             selectedCategory === "For You" ? "text-white" : "opacity-50"
@@ -60,14 +60,14 @@ const SongsList = ({ songs, onSongSelect, currentSong }) => {
         </div>
         <div
           className={`cursor-pointer ${
-            selectedCategory === "Top Tracks" ? "white" : "opacity-50"
+            selectedCategory === "Top Tracks" ? "text-white" : "opacity-50"
           }`}
           onClick={() => setSelectedCategory("Top Tracks")}
         >
           Top Tracks
         </div>
       </div>
-      <div className="relative w-[400px] h-[48px] p-2 bg-[#FFFFFF14] rounded-lg flex items-center">
+      <div className="relative w-full sm:w-[400px] h-[48px] p-2 bg-[#FFFFFF14] rounded-lg flex items-center mt-4 sticky top-16 z-10">
         <input
           type="text"
           placeholder="Search Song, Artist"
@@ -79,37 +79,39 @@ const SongsList = ({ songs, onSongSelect, currentSong }) => {
           <Search className="text-gray-400" />
         </div>
       </div>
-      {!songsWithDuration.length ? (
-        <div className="space-y-4">
-          {[...Array(8)].map((_, index) => (
-            <div
-              key={index}
-              className="flex gap-4 p-4 animate-pulse justify-between"
-            >
-              <div className="flex gap-4">
-                <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
-                <div className="flex flex-col space-y-2">
-                  <div className="w-44 h-4 bg-gray-300 rounded"></div>
-                  <div className="w-24 h-4 bg-gray-400 rounded"></div>
+      <div className="overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+        {!songsWithDuration.length ? (
+          <div className="space-y-4">
+            {[...Array(8)].map((_, index) => (
+              <div
+                key={index}
+                className="flex gap-4 p-4 animate-pulse justify-between"
+              >
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
+                  <div className="flex flex-col space-y-2">
+                    <div className="w-44 h-4 bg-gray-300 rounded"></div>
+                    <div className="w-24 h-4 bg-gray-400 rounded"></div>
+                  </div>
                 </div>
-              </div>
 
-              <div className="w-12 h-4 bg-gray-400 rounded"></div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div>
-          {searchFilteredSongs.map((song) => (
-            <SongChip
-              key={song.id}
-              data={song}
-              onClick={()=>handleSongSelect(song)}
-              isSelected={currentSong?.id === song.id}
-            />
-          ))}
-        </div>
-      )}
+                <div className="w-12 h-4 bg-gray-400 rounded"></div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div>
+            {searchFilteredSongs.map((song) => (
+              <SongChip
+                key={song.id}
+                data={song}
+                onClick={() => handleSongSelect(song)}
+                isSelected={currentSong?.id === song.id}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
