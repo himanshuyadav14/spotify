@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { ReactComponent as Search } from "../assets/Search.svg";
 import SongChip from "./SongChip";
 
-const SongsList = ({ songs, onSongSelect }) => {
+const SongsList = ({ songs, onSongSelect, currentSong }) => {
   const [songsWithDuration, setSongsWithDuration] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("For You");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedSong, setSelectedSong] = useState(null);
 
   useEffect(() => {
     const fetchDurations = async () => {
@@ -45,7 +44,6 @@ const SongsList = ({ songs, onSongSelect }) => {
   );
 
   const handleSongSelect = (song) => {
-    setSelectedSong(song);
     onSongSelect(song);
   };
 
@@ -107,7 +105,7 @@ const SongsList = ({ songs, onSongSelect }) => {
               key={song.id}
               data={song}
               onClick={()=>handleSongSelect(song)}
-              isSelected={selectedSong?.id === song.id}
+              isSelected={currentSong?.id === song.id}
             />
           ))}
         </div>

@@ -21,6 +21,21 @@ const Home = () => {
   const handleSongSelect = (song) => {
     setCurrentSong(song);
   };
+
+  const handlePrevSong = () => {
+    if (!currentSong) return;
+    const currentIndex = songs.findIndex((song) => song.id === currentSong.id);
+    const prevIndex = (currentIndex - 1 + songs.length) % songs.length;
+    setCurrentSong(songs[prevIndex]);
+  };
+
+  const handleNextSong = () => {
+    if (!currentSong) return;
+    const currentIndex = songs.findIndex((song) => song.id === currentSong.id);
+    const nextIndex = (currentIndex + 1) % songs.length;
+    setCurrentSong(songs[nextIndex]);
+  };
+
   return (
     <div className="relative bg-custom-gradient flex min-h-screen text-white">
       <div className="absolute top-10 left-10 cursor-pointer">
@@ -31,12 +46,20 @@ const Home = () => {
       <div className="flex justify-between px-24 m-10 mx-auto items-center gap-36">
         {/* Left - Song List */}
         <div className="w-[440px] h-[800px] overflow-auto p-4 ml-12">
-          <SongsList songs={songs} onSongSelect={handleSongSelect} />
+          <SongsList
+            songs={songs}
+            onSongSelect={handleSongSelect}
+            currentSong={currentSong}
+          />
         </div>
 
         {/* Right - Music Player */}
         <div className="w-[480px] h-[750px] rounded-lg shadow-lg p-6">
-          <MusicPlayer song={currentSong} />
+          <MusicPlayer
+            song={currentSong}
+            onPrev={handlePrevSong}
+            onNext={handleNextSong}
+          />
         </div>
       </div>
 

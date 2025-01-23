@@ -5,12 +5,14 @@ import { ReactComponent as Prev } from "../assets/Prev.svg";
 import { ReactComponent as Next } from "../assets/Next.svg";
 import { FaPlay, FaPause } from "react-icons/fa";
 import { RiFileMusicLine } from "react-icons/ri";
+import { PiSpeakerSimpleSlashFill } from "react-icons/pi";
 
-const MusicPlayer = ({ song }) => {
+const MusicPlayer = ({ song, onPrev, onNext }) => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
 
   const defaultSong = {
     name: "No Song Selected",
@@ -26,6 +28,12 @@ const MusicPlayer = ({ song }) => {
       audioRef.current.pause();
     }
     setIsPlaying(!isPlaying);
+  };
+
+  const handleMuteToggle = () => {
+    const audio = audioRef.current;
+    audio.muted = !isMuted;
+    setIsMuted(!isMuted);
   };
 
   // Update current time when the song is playing
@@ -95,7 +103,7 @@ const MusicPlayer = ({ song }) => {
           max="100"
           value={(currentTime / duration) * 100 || 0}
           onChange={handleSeek}
-          className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer" // Invisible but functional range input
+          className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
         />
       </div>
       <audio
@@ -104,9 +112,12 @@ const MusicPlayer = ({ song }) => {
         onTimeUpdate={handleTimeUpdate}
       />
       <div className="flex justify-between items-center mt-8">
-        <ThreeDots />
+        <ThreeDots className="cursor-pointer" />
         <div className="flex items-center gap-8">
-          <Prev />
+          <button onClick={onPrev}>
+            <Prev />
+          </button>
+
           <button
             onClick={handlePlayPause}
             className={`w-12 h-12 rounded-full text-center flex items-center justify-center ${
@@ -120,9 +131,19 @@ const MusicPlayer = ({ song }) => {
               <FaPlay className="text-black text-xl" />
             )}
           </button>
-          <Next />
+          <button onClick={onNext}>
+            <Next />
+          </button>
         </div>
-        <Speaker />
+        <button onClick={handleMuteToggle}>
+          {isMuted ? (
+            <div className="w-8 h-8 rounded-full bg-[#121212] flex justify-center items-center">
+              <PiSpeakerSimpleSlashFill className="w-4 h-4" />
+            </div>
+          ) : (
+            <Speaker className="w-8 h-8" />
+          )}
+        </button>
       </div>
     </div>
   );
