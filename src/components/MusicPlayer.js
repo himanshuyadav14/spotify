@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ReactComponent as ThreeDots } from "../assets/ThreeDots.svg";
-import { ReactComponent as Speaker } from "../assets/Speaker.svg";
 import { ReactComponent as Prev } from "../assets/Prev.svg";
 import { ReactComponent as Next } from "../assets/Next.svg";
 import { FaPlay, FaPause } from "react-icons/fa";
 import { RiFileMusicLine } from "react-icons/ri";
-import { PiSpeakerSimpleSlashFill } from "react-icons/pi";
+import {
+  PiSpeakerSimpleHighFill,
+  PiSpeakerSimpleSlashFill,
+} from "react-icons/pi";
+import { BsThreeDots } from "react-icons/bs";
 
 const MusicPlayer = ({ song, onPrev, onNext }) => {
   const audioRef = useRef(null);
@@ -68,33 +70,45 @@ const MusicPlayer = ({ song, onPrev, onNext }) => {
       };
 
       // Play the song if autoplay is allowed
-      const playAudio = async () => {
-        try {
-          await audio.play();
-          setIsPlaying(true);
-        } catch (error) {
-          console.error("Autoplay blocked. Waiting for user interaction.", error);
-          setIsPlaying(false);
-        }
-      };
+      if (isPlaying) {
+        const playAudio = async () => {
+          try {
+            await audio.play();
+          } catch (error) {
+            console.error(
+              "Autoplay blocked. Waiting for user interaction.",
+              error
+            );
+            setIsPlaying(false);
+          }
+        };
 
-      playAudio();
+        playAudio();
+      } else {
+        audio.pause();
+      }
     }
-  }, [currentSong, onNext]);
+  }, [currentSong, onNext, isPlaying]);
 
   return (
     <div className="music-player">
       {/* Song Title and Artist */}
       <div className="flex flex-col gap-2 mb-8 text-left">
-        <div className="font-bold text-[32px] leading-9">{currentSong.name}</div>
-        <div className="text-[16px] leading-6 text-gray-400">{currentSong.artist}</div>
+        <div className="font-bold text-[32px] leading-9">
+          {currentSong.name}
+        </div>
+        <div className="text-[16px] leading-6 text-gray-400">
+          {currentSong.artist}
+        </div>
       </div>
 
       {/* Song Cover */}
       <div>
         {currentSong.url ? (
           <img
-            src={`https://cms.samespace.com/assets/${currentSong.cover || "placeholder.jpg"}`}
+            src={`https://cms.samespace.com/assets/${
+              currentSong.cover || "placeholder.jpg"
+            }`}
             alt={`${currentSong.name} cover`}
             className="w-[480px] h-[480px] rounded-lg"
           />
@@ -129,7 +143,12 @@ const MusicPlayer = ({ song, onPrev, onNext }) => {
 
       {/* Controls */}
       <div className="flex justify-between items-center mt-8">
-        <ThreeDots className="cursor-pointer" />
+        <button
+          className="w-10 h-10 rounded-full bg-white bg-opacity-10 flex justify-center items-center"
+        >
+          <BsThreeDots />
+        </button>
+
         <div className="flex items-center gap-8">
           <button onClick={onPrev} disabled={!currentSong.url}>
             <Prev />
@@ -154,11 +173,14 @@ const MusicPlayer = ({ song, onPrev, onNext }) => {
           </button>
         </div>
 
-        <button onClick={handleMuteToggle} className="w-8 h-8 rounded-full flex justify-center items-center">
+        <button
+          onClick={handleMuteToggle}
+          className="w-10 h-10 rounded-full bg-white bg-opacity-10 flex justify-center items-center"
+        >
           {isMuted ? (
-            <PiSpeakerSimpleSlashFill className="text-gray-400" />
+            <PiSpeakerSimpleSlashFill className="" />
           ) : (
-            <Speaker className="text-white" />
+            <PiSpeakerSimpleHighFill className="" />
           )}
         </button>
       </div>
