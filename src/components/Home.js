@@ -28,7 +28,6 @@ const Home = () => {
 
   const handleSongSelect = (song) => {
     setCurrentSong(song);
-    // setIsMenuOpen(false);
   };
 
   const handlePrevSong = () => {

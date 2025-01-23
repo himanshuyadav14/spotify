@@ -27,10 +27,10 @@ const MusicPlayer = ({ song, onPrev, onNext }) => {
 
   // Play/Pause toggle
   const handlePlayPause = () => {
-    if (!isPlaying) {
-      audioRef.current.play();
-    } else {
+    if (isPlaying) {
       audioRef.current.pause();
+    } else {
+      audioRef.current.play();
     }
     setIsPlaying(!isPlaying);
   };
@@ -69,7 +69,7 @@ const MusicPlayer = ({ song, onPrev, onNext }) => {
         onNext && onNext(); // Call onNext if provided
       };
 
-      // Play the song if autoplay is allowed
+      // Play the song only if isPlaying is true
       if (isPlaying) {
         const playAudio = async () => {
           try {
@@ -89,6 +89,21 @@ const MusicPlayer = ({ song, onPrev, onNext }) => {
       }
     }
   }, [currentSong, onNext, isPlaying]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    const playAudio = async () => {
+      try {
+        await audio.play();
+      } catch (error) {
+        console.error("Autoplay blocked. Waiting for user interaction.", error);
+        setIsPlaying(false);
+      }
+    };
+    setIsPlaying(true);
+    playAudio();
+  }, [currentSong]);
 
   return (
     <div className="music-player">
@@ -143,9 +158,7 @@ const MusicPlayer = ({ song, onPrev, onNext }) => {
 
       {/* Controls */}
       <div className="flex justify-between items-center mt-8">
-        <button
-          className="w-10 h-10 rounded-full bg-white bg-opacity-10 flex justify-center items-center"
-        >
+        <button className="w-10 h-10 rounded-full bg-white bg-opacity-10 flex justify-center items-center">
           <BsThreeDots />
         </button>
 
